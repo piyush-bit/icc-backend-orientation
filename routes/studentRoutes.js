@@ -23,6 +23,15 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+// ✅ Get Student Count
+router.get("/count", async (req, res) => {
+  try {
+    const count = await Student.countDocuments();
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Get Single Student by ID
 router.get("/:id", async (req, res) => {
@@ -57,14 +66,6 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// ✅ Get Student Count
-router.get("/count", async (req, res) => {
-  try {
-    const count = await Student.countDocuments();
-    res.json({ count });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+
 
 export default router;
