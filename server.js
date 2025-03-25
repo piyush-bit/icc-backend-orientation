@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import studentRoutes from "./routes/studentRoutes.js";
+import registrationRoute from "./routes/registrationRoute.js";
 
 dotenv.config();
 const app = express();
@@ -13,6 +14,7 @@ app.use(cors());
 
 // Routes
 app.use("/api/students", studentRoutes);
+app.use("/api/auth", registrationRoute);
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
