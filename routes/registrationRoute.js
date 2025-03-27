@@ -2,6 +2,7 @@ import express from "express";
 import Student from "../models/RegisteredStudent.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -93,4 +94,16 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/",auth,async(req,res)=>{
+  try {
+    const id = req.user.id;
+    const student = await Student.findById(id);
+    res.status(200).json({student});
+  } catch (error) {
+    
+  }
+});
+
 export default router;
+
+
