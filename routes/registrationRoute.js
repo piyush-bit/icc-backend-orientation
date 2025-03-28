@@ -45,7 +45,27 @@ router.post("/signup", async (req, res) => {
     // Save student to database
     await newStudent.save();
 
-    res.status(201).json({ message: "Student registered successfully" });
+    // Generate JWT token for newly registered student
+    const token = jwt.sign(
+      { id: newStudent._id, email: newStudent.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "6h" }
+    );
+
+    res.status(201).json({ 
+      message: "Student registered successfully",
+      token,
+      student: {
+        id: newStudent._id,
+        firstName: newStudent.firstName,
+        lastName: newStudent.lastName,
+        email: newStudent.email,
+        registrationNumber: newStudent.registrationNumber,
+        primaryDomain: newStudent.primaryDomain,
+        secondaryDomain: newStudent.secondaryDomain,
+        contactNumber: newStudent.contactNumber
+      }
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -72,7 +92,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign(
       { id: student._id, email: student.email },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "6h" }
     );
 
     res.status(200).json({
